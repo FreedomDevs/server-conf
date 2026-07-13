@@ -1,0 +1,102 @@
+{
+  "nodes": {
+    "ecli-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782739642,
+        "narHash": "sha256-isrLZrpt911xgCO9WvL7pkHwL97NrBXcgQXdGvDp80s=",
+        "owner": "FreedomDevs",
+        "repo": "ECLI",
+        "rev": "2d209594b46682981abb2047271fc8c689ea400c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FreedomDevs",
+        "repo": "ECLI",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783740085,
+        "narHash": "sha256-qajyHfZY29G2oEQk+uHxmsJcRoBUBXP9maTpFlwP/dI=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "3cd22efe6471dc7365c822bd9ad73a21e55f38fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-26.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "hyperbox-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783886647,
+        "narHash": "sha256-ui7EvQ1+HPif4n3ANEKg9U3nj9zyYiXb8X2D9SmtLNg=",
+        "ref": "refs/heads/master",
+        "rev": "bb0ed5c7292e68731712e05c6e4b3769aeea15aa",
+        "revCount": 34,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/mikinol/hyperbox"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/mikinol/hyperbox"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1783856661,
+        "narHash": "sha256-ZGP04e+Q6WyQJGA9ZvI5CL6+heGQldbAG9U1T9NGvmU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "569d578509928497eddc3fdbf94a799027050be4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1783776592,
+        "narHash": "sha256-UgCQzxeWI75XM8G+hPrPh+MKzEPjG3SpAj7dtqSbksA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e7a3ca8092b61ff85b6a45bf863ea2b2d6a661b3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "ecli-src": "ecli-src",
+        "home-manager": "home-manager",
+        "hyperbox-src": "hyperbox-src",
+        "nixpkgs-stable": "nixpkgs-stable",
+        "nixpkgs-unstable": "nixpkgs-unstable"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
