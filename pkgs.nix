@@ -1,7 +1,6 @@
 {
   callPackage,
   stdenv,
-
   ecli-src,
   hyperbox-src,
   arch ? null,

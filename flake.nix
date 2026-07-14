@@ -8,6 +8,11 @@
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
 
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.home-manager.follows = "home-manager";
+    agenix.inputs.nixpkgs.follows = "nixpkgs-stable";
+    agenix.inputs.darwin.follows = "";
+
     ecli-src = {
       url = "github:FreedomDevs/ECLI";
       flake = false;
@@ -23,6 +28,7 @@
     self,
     nixpkgs-stable,
     nixpkgs-unstable,
+    agenix,
     ecli-src,
     hyperbox-src,
     ...
@@ -41,6 +47,9 @@
               config.allowUnfree = true;
             };
           })
+          (final: prev: {
+            agenix = agenix.packages.${system}.default;
+          })
 
           (final: prev: {
             # Инициализируется после всего
@@ -55,14 +64,16 @@
     in
       nixpkgs-stable.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit device; };
+        specialArgs = {inherit device;};
 
         modules = [
           {nixpkgs.pkgs = pkgs;}
           {nixpkgs.hostPlatform = system;}
 
           "${self}/configuration.nix"
-          "${self}/hardware-configuration/${device}.nix"
+          "${self}/servers/${device}/hardware-configuration.nix"
+
+          agenix.nixosModules.default
         ];
       };
   in {

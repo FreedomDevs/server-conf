@@ -1,4 +1,8 @@
-{pkgs, ...}:{
+{
+  pkgs,
+  device,
+  ...
+}: {
   imports = [
     ./services/services.nix
     ./vmconfig.nix
@@ -13,7 +17,8 @@
     extraGroups = ["wheel" "podman"];
 
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ sm44aksdmiki13877kfh@gmail.com" # Мой ключ, для меня
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ" # Мой ключ, для меня
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA" # Ноут
     ];
   };
 
@@ -22,8 +27,14 @@
     hashedPassword = "*";
     extraGroups = ["mc-admins"];
 
-    openssh.authorizedKeys.keys = [ # Тут будут ключи админов
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ sm44aksdmiki13877kfh@gmail.com"
+    packages = with pkgs; [
+      openjdk21_headless
+    ];
+
+    openssh.authorizedKeys.keys = [
+      # Тут будут ключи админов
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA"
     ];
   };
 
@@ -53,7 +64,7 @@
     containers.enable = true;
     podman = {
       enable = true;
-      dockerCompat = true; 
+      dockerCompat = true;
     };
   };
   systemd.sockets.podman.socketConfig = {
@@ -69,12 +80,24 @@
     fi
   '';
 
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedTCPPorts = [22 80 443];
+
+  age.identityPaths = [
+    "/home/mikinol/.ssh/id_ed25519"
+  ];
+  age.secrets = {
+    "resourcepack_namespace" = {
+      file = ./servers/${device}/secrets/resourcepack_namespace.age;
+      owner = "root";
+      group = "root";
+      mode = "0400";
+    };
+  };
 
   environment.systemPackages = with pkgs; [
+    agenix
     home-manager
     git
-    openjdk21_headless
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
