@@ -27,11 +27,7 @@ in {
     ];
 
     appendHttpConfig = ''
-      lua_package_path "${
-        pkgs.lib.concatStringsSep ":" (
-          map (x: "${x}/share/lua/5.1/?.lua") pkgs.custom.svc-gateway.luaDependencies
-        )
-      };;";
+      lua_package_path "${pkgs.custom.svc-gateway.luaDependencies};";
     '';
 
     virtualHosts."default" = {
@@ -84,6 +80,20 @@ in {
       onlySSL = true;
       sslCertificate = test_cert;
       sslCertificateKey = test_key;
+    };
+
+    virtualHosts."resourcepacks.test.lan" = {
+      listen = defaultListen;
+
+      root = "/var/www/resourcepacks";
+
+      onlySSL = true;
+      sslCertificate = test_cert;
+      sslCertificateKey = test_key;
+
+      extraConfig = ''
+        index index.html;
+      '';
     };
   };
 }

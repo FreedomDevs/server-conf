@@ -13,10 +13,6 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs-stable";
     agenix.inputs.darwin.follows = "";
 
-    # Для виртуалки
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs-stable";
-
     ecli-src = {
       url = "github:FreedomDevs/ECLI";
       flake = false;
@@ -85,21 +81,17 @@
         inherit system;
         specialArgs = {inherit device;};
 
-        modules =
-          [
-            {nixpkgs.pkgs = pkgs;}
-            {nixpkgs.hostPlatform = system;}
+        modules = [
+          {nixpkgs.pkgs = pkgs;}
+          {nixpkgs.hostPlatform = system;}
 
-            disko.nixosModules.disko
+          disko.nixosModules.disko
 
-            "${self}/vmconfig.nix"
+          "${self}/configuration.nix"
+          "${self}/servers/${device}/hardware-configuration.nix"
 
-            "${self}/configuration.nix"
-            "${self}/servers/${device}/hardware-configuration.nix"
-
-            agenix.nixosModules.default
-          ]
-          ++ pkgs.lib.optional (device == "vm-server") "${self}/vmconfig.nix";
+          agenix.nixosModules.default
+        ];
       };
   in {
     nixosConfigurations = {

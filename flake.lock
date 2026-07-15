@@ -27,9 +27,7 @@
     },
     "disko": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1781152676,
@@ -40,9 +38,8 @@
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "disko",
-        "type": "github"
+        "id": "disko",
+        "type": "indirect"
       }
     },
     "ecli-src": {
@@ -116,6 +113,22 @@
         "url": "https://github.com/mikinol/hyperbox"
       }
     },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1780930886,
+        "narHash": "sha256-rppURzHviaQN131F+nLiLdGfcb0uCd9gGP0E5+iw9MI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "8c3cede7ddc26bd659d2d383b5610efbd2c7a16e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1783856661,
@@ -164,11 +177,11 @@
     "svc-gateway-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784145544,
-        "narHash": "sha256-aPn2RSxUphd9tPhZ0FGKeB3zUiw07etxp8FWuJ/bHnA=",
+        "lastModified": 1784155755,
+        "narHash": "sha256-LyTUHEg0NAY89cvFflnxfawt/No2qwl4ORPjMQy9Rqw=",
         "owner": "FreedomDevs",
         "repo": "svc-gateway",
-        "rev": "47bb94941b53804e8e170055bc892946b454129b",
+        "rev": "215c8199308c98b48a0f29fcb6548bc4d34a121d",
         "type": "github"
       },
       "original": {
