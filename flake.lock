@@ -41,6 +41,22 @@
         "type": "github"
       }
     },
+    "elysium-server-control-scripts-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784131788,
+        "narHash": "sha256-2RycpNkobAcpQbno+RsrdU++mdt833AQCCac2BHziKg=",
+        "owner": "FreedomDevs",
+        "repo": "server-control-scripts",
+        "rev": "9e401efd7a6bad9622d39710eab52ecded6780bf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FreedomDevs",
+        "repo": "server-control-scripts",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -116,6 +132,7 @@
       "inputs": {
         "agenix": "agenix",
         "ecli-src": "ecli-src",
+        "elysium-server-control-scripts-src": "elysium-server-control-scripts-src",
         "home-manager": "home-manager",
         "hyperbox-src": "hyperbox-src",
         "nixpkgs-stable": "nixpkgs-stable",

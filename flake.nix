@@ -22,6 +22,11 @@
       url = "git+https://github.com/mikinol/hyperbox?submodules=1";
       flake = false;
     };
+
+    elysium-server-control-scripts-src = {
+      url = "github:FreedomDevs/server-control-scripts";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -31,6 +36,7 @@
     agenix,
     ecli-src,
     hyperbox-src,
+    elysium-server-control-scripts-src,
     ...
   }: let
     system = "x86_64-linux";
@@ -56,6 +62,7 @@
             custom = final.callPackage ./pkgs.nix {
               ecli-src = ecli-src;
               hyperbox-src = hyperbox-src;
+              elysium-server-control-scripts-src = elysium-server-control-scripts-src;
               arch = arch;
             };
           })

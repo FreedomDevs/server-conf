@@ -6,10 +6,13 @@
   imports = [
     ./services/services.nix
     ./vmconfig.nix
+    ./tmpfiles.nix
   ];
 
   users.groups.mc-admins = {};
   users.groups.podman = {};
+
+  users.groups.web-access = {}; # Даёт доступ к /var/www
 
   users.users.mikinol = {
     isNormalUser = true;
@@ -29,6 +32,7 @@
 
     packages = with pkgs; [
       openjdk21_headless
+      custom.elysium-server-control-scripts
     ];
 
     openssh.authorizedKeys.keys = [
@@ -95,7 +99,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    agenix
     home-manager
     git
   ];
