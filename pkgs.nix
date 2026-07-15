@@ -4,6 +4,7 @@
   ecli-src,
   hyperbox-src,
   elysium-server-control-scripts-src,
+  svc-gateway-src,
   arch ? null,
 }: let
   optimizedStdenv =
@@ -21,4 +22,5 @@ in {
   ecli = callPackage ecli-src {stdenv = optimizedStdenv;};
   hyperbox = callPackage hyperbox-src {stdenv = optimizedStdenv;};
   elysium-server-control-scripts = callPackage elysium-server-control-scripts-src {};
+  svc-gateway = callPackage svc-gateway-src {};
 }

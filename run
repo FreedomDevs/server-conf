@@ -1,2 +1,2 @@
 #!/bin/sh
-nix run .#nixosConfigurations.main-game-server.config.system.build.vm --impure
+nix run .#nixosConfigurations.vm-server.config.system.build.vm --impure

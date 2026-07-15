@@ -13,6 +13,10 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs-stable";
     agenix.inputs.darwin.follows = "";
 
+    # Для виртуалки
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs-stable";
+
     ecli-src = {
       url = "github:FreedomDevs/ECLI";
       flake = false;
@@ -27,6 +31,11 @@
       url = "github:FreedomDevs/server-control-scripts";
       flake = false;
     };
+
+    svc-gateway-src = {
+      url = "github:FreedomDevs/svc-gateway";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -34,9 +43,11 @@
     nixpkgs-stable,
     nixpkgs-unstable,
     agenix,
+    disko,
     ecli-src,
     hyperbox-src,
     elysium-server-control-scripts-src,
+    svc-gateway-src,
     ...
   }: let
     system = "x86_64-linux";
@@ -63,6 +74,7 @@
               ecli-src = ecli-src;
               hyperbox-src = hyperbox-src;
               elysium-server-control-scripts-src = elysium-server-control-scripts-src;
+              svc-gateway-src = svc-gateway-src;
               arch = arch;
             };
           })
@@ -73,19 +85,25 @@
         inherit system;
         specialArgs = {inherit device;};
 
-        modules = [
-          {nixpkgs.pkgs = pkgs;}
-          {nixpkgs.hostPlatform = system;}
+        modules =
+          [
+            {nixpkgs.pkgs = pkgs;}
+            {nixpkgs.hostPlatform = system;}
 
-          "${self}/configuration.nix"
-          "${self}/servers/${device}/hardware-configuration.nix"
+            disko.nixosModules.disko
 
-          agenix.nixosModules.default
-        ];
+            "${self}/vmconfig.nix"
+
+            "${self}/configuration.nix"
+            "${self}/servers/${device}/hardware-configuration.nix"
+
+            agenix.nixosModules.default
+          ]
+          ++ pkgs.lib.optional (device == "vm-server") "${self}/vmconfig.nix";
       };
   in {
     nixosConfigurations = {
-      main-game-server = mkSystem "main-game-server" null;
+      vm-server = mkSystem "vm-server" null;
     };
   };
 }

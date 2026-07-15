@@ -1,4 +1,4 @@
-{...}: {
+{lib, ...}: {
   system.activationScripts.copyMikinolSshKey = {
     text = ''
       USER_SSH_DIR="/home/mikinol/.ssh"
@@ -38,4 +38,15 @@
       extraArguments = "-N -R 2443:localhost:443 -o StrictHostKeyChecking=no mikinol@192.168.2.2";
     }
   ];
+
+  virtualisation.vmVariant = {
+    virtualisation.diskSize = 2048;
+    virtualisation.useDefaultFilesystems = false;
+    boot.initrd.supportedFilesystems = ["btrfs"];
+    virtualisation.fileSystems."/" = {
+      device = "/dev/vda";
+      autoFormat = true;
+      fsType = "btrfs";
+    };
+  };
 }

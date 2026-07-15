@@ -25,6 +25,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781152676,
+        "narHash": "sha256-RxWs5ND31KzTG7wvMM+PMfUjyNpmIEr999lqNARaM5o=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "ff8702b4de27f72b4c78573dfb89ec74e36abdf1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "ecli-src": {
       "flake": false,
       "locked": {
@@ -131,12 +151,30 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "disko": "disko",
         "ecli-src": "ecli-src",
         "elysium-server-control-scripts-src": "elysium-server-control-scripts-src",
         "home-manager": "home-manager",
         "hyperbox-src": "hyperbox-src",
         "nixpkgs-stable": "nixpkgs-stable",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "svc-gateway-src": "svc-gateway-src"
+      }
+    },
+    "svc-gateway-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784145544,
+        "narHash": "sha256-aPn2RSxUphd9tPhZ0FGKeB3zUiw07etxp8FWuJ/bHnA=",
+        "owner": "FreedomDevs",
+        "repo": "svc-gateway",
+        "rev": "47bb94941b53804e8e170055bc892946b454129b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FreedomDevs",
+        "repo": "svc-gateway",
+        "type": "github"
       }
     },
     "systems": {

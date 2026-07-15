@@ -5,9 +5,9 @@
 }: {
   imports = [
     ./services/services.nix
-    ./vmconfig.nix
     ./tmpfiles.nix
   ];
+  boot.initrd.systemd.emergencyAccess = true;
 
   users.groups.mc-admins = {};
   users.groups.podman = {};
