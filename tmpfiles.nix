@@ -13,6 +13,6 @@ in {
     "q /home/game-server-1 0700 game-server-1 users"
     "d /home/game-server-1/server 0700 game-server-1 users"
 
-    #"q /home/game-server-1/backups 0700 game-server-1 users"
+    "q /home/game-server-1/backups 0700 game-server-1 users"
   ];
 }

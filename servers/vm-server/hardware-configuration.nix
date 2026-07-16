@@ -61,6 +61,8 @@ in {
       chmod 600 "$TARGET_KEY"
       chown mikinol:users "$TARGET_KEY"
 
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign /home/game-server-1/backups /home/game-server-1 /
+
       ${quotas}
     '';
   };
