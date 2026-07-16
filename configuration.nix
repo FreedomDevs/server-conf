@@ -19,9 +19,12 @@
     initialPassword = "123";
     extraGroups = ["wheel" "podman"];
 
+    createHome = false;
+    home = "/home/mikinol";
+
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ" # Мой ключ, для меня
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA" # Ноут
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA sm44aksdmiki13877kfh@gmail.com"
     ];
   };
 
@@ -29,6 +32,9 @@
     isNormalUser = true;
     hashedPassword = "*";
     extraGroups = ["mc-admins"];
+
+    createHome = false;
+    home = "/home/game-server-1";
 
     packages = with pkgs; [
       openjdk21_headless
@@ -38,7 +44,7 @@
     openssh.authorizedKeys.keys = [
       # Тут будут ключи админов
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA sm44aksdmiki13877kfh@gmail.com"
     ];
   };
 
@@ -83,6 +89,21 @@
       export DOCKER_HOST="unix:///run/podman/podman.sock"
     fi
   '';
+
+  security.sudo = {
+    enable = true;
+    extraRules = [
+      {
+        groups = ["mc-admins"];
+        commands = [
+          {
+            command = "${pkgs.custom.elysium-server-control-scripts}/internal/publish_resourcepack";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+  };
 
   networking.firewall.allowedTCPPorts = [22 80 443];
 
