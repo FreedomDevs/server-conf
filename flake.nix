@@ -32,6 +32,11 @@
       url = "github:FreedomDevs/svc-gateway";
       flake = false;
     };
+
+    eMC-src = {
+      url = "github:FreedomDevs/eMC";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -44,6 +49,7 @@
     hyperbox-src,
     elysium-server-control-scripts-src,
     svc-gateway-src,
+    eMC-src,
     ...
   }: let
     system = "x86_64-linux";
@@ -71,6 +77,7 @@
               hyperbox-src = hyperbox-src;
               elysium-server-control-scripts-src = elysium-server-control-scripts-src;
               svc-gateway-src = svc-gateway-src;
+              eMC-src = eMC-src;
               arch = arch;
             };
           })

@@ -122,6 +122,7 @@
   environment.systemPackages = with pkgs; [
     home-manager
     git
+    custom.eMC
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];

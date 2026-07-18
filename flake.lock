@@ -42,6 +42,22 @@
         "type": "indirect"
       }
     },
+    "eMC-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784383781,
+        "narHash": "sha256-pX0YncMs8N83ztUZF30kM23ujs3UvmliRM2Q69W6n7k=",
+        "owner": "FreedomDevs",
+        "repo": "eMC",
+        "rev": "8a0ec378bbc20693a451116a4f88387501e9f64c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FreedomDevs",
+        "repo": "eMC",
+        "type": "github"
+      }
+    },
     "ecli-src": {
       "flake": false,
       "locked": {
@@ -165,6 +181,7 @@
       "inputs": {
         "agenix": "agenix",
         "disko": "disko",
+        "eMC-src": "eMC-src",
         "ecli-src": "ecli-src",
         "elysium-server-control-scripts-src": "elysium-server-control-scripts-src",
         "home-manager": "home-manager",
