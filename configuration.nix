@@ -30,7 +30,8 @@
 
   users.users.game-server-1 = {
     isNormalUser = true;
-    hashedPassword = "*";
+    #hashedPassword = "*";
+    initialPassword = "123";
     extraGroups = ["mc-admins"];
 
     createHome = false;
@@ -67,6 +68,7 @@
       MemoryHigh = "6G";
       MemoryMax = "8G";
       MemorySwapMax = "2G";
+      CPUQuota = "400%";
     };
   };
 
