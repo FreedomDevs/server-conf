@@ -1,28 +1,16 @@
 {pkgs, ...}: let
   quotas = ''
-    ${pkgs.btrfs-progs}/bin/btrfs qgroup limit 50M /home/game-server-1 || true
+    ${pkgs.btrfs-progs}/bin/btrfs qgroup limit 60M 1/1 || true
+    ${pkgs.btrfs-progs}/bin/btrfs qgroup limit 50M 1/2 || true
   '';
 in {
   system.stateVersion = "26.05";
 
   services.autossh.sessions = [
     {
-      name = "ssh-reverse-tunnel";
+      name = "reverse-tunnel";
       user = "mikinol";
-
-      extraArguments = "-N -R 2022:localhost:22 -o StrictHostKeyChecking=no mikinol@192.168.2.3";
-    }
-    {
-      name = "http-reverse-tunnel";
-      user = "mikinol";
-
-      extraArguments = "-N -R 2080:localhost:80 -o StrictHostKeyChecking=no mikinol@192.168.2.3";
-    }
-    {
-      name = "https-reverse-tunnel";
-      user = "mikinol";
-
-      extraArguments = "-N -R 2443:localhost:443 -o StrictHostKeyChecking=no mikinol@192.168.2.3";
+      extraArguments = "-N -R 2022:localhost:22 -R 2080:localhost:80 -R 2443:localhost:443 -o StrictHostKeyChecking=no mikinol@192.168.2.2";
     }
   ];
 
@@ -38,10 +26,13 @@ in {
     };
 
     script = ''
-      ${pkgs.btrfs-progs}/bin/btrfs quota enable /
+      echo 1
+      ${pkgs.btrfs-progs}/bin/btrfs quota enable / || true
 
-      if sudo btrfs subvolume show /home >/dev/null 2>&1; then
+      echo 2
+      if ${pkgs.btrfs-progs}/bin/btrfs subvolume show /home >/dev/null 2>&1; then
         echo "Это subvolume!"
+        exit 0
       else
         rm -rf /home
         systemd-tmpfiles --create
@@ -61,7 +52,27 @@ in {
       chmod 600 "$TARGET_KEY"
       chown mikinol:users "$TARGET_KEY"
 
-      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign /home/game-server-1/backups /home/game-server-1 /
+      PATH_HOME="/home"
+      PATH_GAME="/home/game-server-1"
+      PATH_BACKUPS="/home/game-server-1/backups"
+
+      # Получаем ID сабволюмов
+      ID_HOME=$(${pkgs.btrfs-progs}/bin/btrfs subvolume show "$PATH_HOME" | ${pkgs.gawk}/bin/awk '/Subvolume ID:/ {print $3}')
+      ID_GAME=$(${pkgs.btrfs-progs}/bin/btrfs subvolume show "$PATH_GAME" | ${pkgs.gawk}/bin/awk '/Subvolume ID:/ {print $3}')
+      ID_BACKUPS=$(${pkgs.btrfs-progs}/bin/btrfs subvolume show "$PATH_BACKUPS" | ${pkgs.gawk}/bin/awk '/Subvolume ID:/ {print $3}')
+
+      # Создаем группы (игнорируем ошибку, если уже созданы)
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup create 1/1 "$PATH_HOME"
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup create 1/2 "$PATH_HOME"
+
+      # 1. Группа 1/1: объединяет сервер и бэкапы
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign "0/$ID_GAME" 1/1 "$PATH_HOME"
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign "0/$ID_BACKUPS" 1/1 "$PATH_HOME"
+
+      # 2. Группа 1/2: объединяет ВСЕ ТРИ сабволюма (сам /home + сервер + бэкапы)
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign "0/$ID_HOME" 1/2 "$PATH_HOME"
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign "0/$ID_GAME" 1/2 "$PATH_HOME"
+      ${pkgs.btrfs-progs}/bin/btrfs qgroup assign "0/$ID_BACKUPS" 1/2 "$PATH_HOME"
 
       ${quotas}
     '';

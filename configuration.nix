@@ -9,15 +9,33 @@
   ];
   boot.initrd.systemd.emergencyAccess = true;
 
-  users.groups.mc-admins = {};
-  users.groups.podman = {};
+  users.groups.mc-admins = { gid = 1000; };
+  users.groups.podman = { gid = 1001;};
 
-  users.groups.web-access = {}; # Даёт доступ к /var/www
+  users.groups.web-access = { gid = 1002; }; # Даёт доступ к /var/www
+
+  users.groups.proc-access = { gid = 1003; };
+
+  systemd.services.remount-proc = {
+    description = "Remount /proc with hidepid and custom GID on boot";
+    
+    # Запускаем только при загрузке системы (после того как монтируются базовые ФС)
+    wantedBy = [ "multi-user.target" ];
+    after = [ "local-fs.target" ];
+    
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true; # Чтобы systemd считал службу успешно завершенной и не перезапускал
+      ExecStart = "${pkgs.util-linux}/bin/mount -o remount,hidepid=invisible,gid=1003 /proc";
+    };
+  };
 
   users.users.mikinol = {
     isNormalUser = true;
     initialPassword = "123";
-    extraGroups = ["wheel" "podman"];
+    extraGroups = ["wheel" "podman" "proc-access"];
+
+    uid = 1001;
 
     createHome = false;
     home = "/home/mikinol";
@@ -33,6 +51,8 @@
     #hashedPassword = "*";
     initialPassword = "123";
     extraGroups = ["mc-admins"];
+
+    uid = 1100;
 
     createHome = false;
     home = "/home/game-server-1";
@@ -50,25 +70,27 @@
   };
 
   security.pam.loginLimits = [
-    {
-      domain = "game-server-1";
-      type = "hard";
-      item = "nproc";
-      value = "128";
-    }
-    {
-      domain = "game-server-1";
-      type = "hard";
-      item = "nofile";
-      value = "1024";
-    }
+    { domain = "game-server-1"; item = "nproc"; type = "hard"; value = "200"; }
+    { domain = "game-server-1"; item = "nofile"; type = "soft"; value = "1024"; }
+    { domain = "game-server-1"; item = "nofile"; type = "hard"; value = "4096"; }
+    { domain = "game-server-1"; item = "core"; type = "hard"; value = "0"; }
   ];
-  systemd.slices."user-1000" = {
+
+  systemd.slices."user-1100" = {
     sliceConfig = {
-      MemoryHigh = "6G";
-      MemoryMax = "8G";
+      MemoryLow="2G";
+      MemoryHigh = "4.5G";
+      MemoryMax = "5G";
       MemorySwapMax = "2G";
-      CPUQuota = "400%";
+      CPUQuota = "100%";
+
+      SocketBindDeny="any";
+      SocketBindAllow="10.0.2.15:3000-3010";
+
+      IPAddressDeny="localhost 127.0.0.0/8 10.0.0.0/8 192.168.0.0/16 169.254.0.0/16";
+      IPAddressAllow="any";
+
+      TasksMax = 200;
     };
   };
 
