@@ -109,6 +109,9 @@
     };
   };
 
+  networking.firewall.allowedTCPPortRanges = ["3000-3999"];
+  networking.firewall.allowedUDPPortRanges = ["3000-3999"];
+
   virtualisation = {
     containers.enable = true;
     podman = {
