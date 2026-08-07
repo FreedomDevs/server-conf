@@ -78,6 +78,7 @@
 
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGl+3yT5NFC+w9AgFwTQCACD6gr+9vCyUvv8Em/2dSR ivanz@Magelan"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP+jcHmUsK6+b+/y5mHPsep9UCaMDEtXQEc9rTNPM6Sm spectrich@DESKTOP-H5DJPAD"
     ];
   };
 
