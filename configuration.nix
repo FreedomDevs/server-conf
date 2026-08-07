@@ -169,5 +169,16 @@
     fi
   '';
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = ["nix-command" "flakes"];
+    stalled-download-timeout = 10;
+    connect-timeout = 5;
+
+    substituters = [
+      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+      "https://cache.nixos.org"
+    ];
+    trusted-public-keys = ["cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="];
+  };
 }
