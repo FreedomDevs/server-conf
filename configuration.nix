@@ -102,8 +102,8 @@
 
       RestrictNetworkInterfaces="ens3 lo";
 
-      IPAddressDeny="localhost 127.0.0.0/8 10.0.0.0/8 192.168.0.0/16 169.254.0.0/16";
-      IPAddressAllow="any";
+      IPAddressDeny = "any";
+      IPAddressAllow = "internet";
 
       TasksMax = 200;
     };
