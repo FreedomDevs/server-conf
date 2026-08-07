@@ -97,13 +97,13 @@
       MemorySwapMax = "2G";
       CPUQuota = "100%";
 
-      SocketBindDeny="any";
-      SocketBindAllow="3000-3999";
+      #SocketBindDeny="any";
+      #SocketBindAllow="3000-3999";
 
-      RestrictNetworkInterfaces="ens3 lo";
+      #RestrictNetworkInterfaces="ens3 lo";
 
-      IPAddressDeny = "any";
-      IPAddressAllow = "internet";
+      #IPAddressDeny = "any";
+      #IPAddressAllow = "internet";
 
       TasksMax = 200;
     };
