@@ -61,19 +61,18 @@
     ];
   };
 
-  /*users.users.game-server-1 = {
+  users.users.dead-cats = {
     isNormalUser = true;
-    #hashedPassword = "*";
-    initialPassword = "123";
+    hashedPassword = "*";
     extraGroups = ["mc-admins"];
 
     uid = 1100;
 
     createHome = false;
-    home = "/home/game-server-1";
+    home = "/home/dead-cats";
 
     packages = with pkgs; [
-      openjdk21_headless
+      openjdk25_headless
       custom.elysium-server-control-scripts
     ];
 
@@ -82,13 +81,13 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA sm44aksdmiki13877kfh@gmail.com"
     ];
-  };*/
+  };
 
-  /*security.pam.loginLimits = [
-    { domain = "game-server-1"; item = "nproc"; type = "hard"; value = "200"; }
-    { domain = "game-server-1"; item = "nofile"; type = "soft"; value = "1024"; }
-    { domain = "game-server-1"; item = "nofile"; type = "hard"; value = "4096"; }
-    { domain = "game-server-1"; item = "core"; type = "hard"; value = "0"; }
+  security.pam.loginLimits = [
+    { domain = "dead-cats"; item = "nproc"; type = "hard"; value = "200"; }
+    { domain = "dead-cats"; item = "nofile"; type = "soft"; value = "1024"; }
+    { domain = "dead-cats"; item = "nofile"; type = "hard"; value = "4096"; }
+    { domain = "dead-cats"; item = "core"; type = "hard"; value = "0"; }
   ];
 
   systemd.slices."user-1100" = {
@@ -100,14 +99,14 @@
       CPUQuota = "100%";
 
       SocketBindDeny="any";
-      SocketBindAllow="10.0.2.15:3000-3010";
+      SocketBindAllow=["31.77.143.249:3000-3999" "127.0.0.1:3000-3999" "[::1]:3000-3999"];
 
       IPAddressDeny="localhost 127.0.0.0/8 10.0.0.0/8 192.168.0.0/16 169.254.0.0/16";
       IPAddressAllow="any";
 
       TasksMax = 200;
     };
-  };*/
+  };
 
   virtualisation = {
     containers.enable = true;
