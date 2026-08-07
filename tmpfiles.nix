@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  text = builtins.readFile ./html/resourcepacks_index.html;
+  text = builtins.readFile ./files/resourcepacks_index.html;
   resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
 in {
   systemd.tmpfiles.rules = [

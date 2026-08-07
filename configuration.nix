@@ -145,8 +145,8 @@
 
   networking.firewall.allowedTCPPorts = [22 80 443];
 
-  /*age.identityPaths = [
-    "/home/mikinol/.ssh/id_ed25519"
+  age.identityPaths = [
+    "/root/.ssh/id_ed25519"
   ];
   age.secrets = {
     "resourcepack_namespace" = {
@@ -155,7 +155,7 @@
       group = "root";
       mode = "0400";
     };
-  };*/
+  };
 
   environment.systemPackages = with pkgs; [
     home-manager
@@ -164,6 +164,8 @@
   ];
 
   environment.interactiveShellInit = ''
+    echo -e "${builtins.readFile ./banner.txt}"
+
     if [ -n "$TERM" ] && ! ${pkgs.ncurses}/bin/infocmp "$TERM" >/dev/null 2>&1; then
       export TERM="xterm-256color"
     fi
