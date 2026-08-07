@@ -77,9 +77,7 @@
     ];
 
     openssh.authorizedKeys.keys = [
-      # Тут будут ключи админов
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA sm44aksdmiki13877kfh@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGl+3yT5NFC+w9AgFwTQCACD6gr+9vCyUvv8Em/2dSR ivanz@Magelan"
     ];
   };
 
@@ -99,7 +97,9 @@
       CPUQuota = "100%";
 
       SocketBindDeny="any";
-      SocketBindAllow=["31.77.143.249:3000-3999" "127.0.0.1:3000-3999" "[::1]:3000-3999"];
+      SocketBindAllow="3000-3999";
+
+      RestrictNetworkInterfaces="ens3 lo";
 
       IPAddressDeny="localhost 127.0.0.0/8 10.0.0.0/8 192.168.0.0/16 169.254.0.0/16";
       IPAddressAllow="any";
