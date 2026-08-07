@@ -46,7 +46,7 @@
     ];
   };
 
-  users.users.game-server-1 = {
+  /*users.users.game-server-1 = {
     isNormalUser = true;
     #hashedPassword = "*";
     initialPassword = "123";
@@ -67,9 +67,9 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA sm44aksdmiki13877kfh@gmail.com"
     ];
-  };
+  };*/
 
-  security.pam.loginLimits = [
+  /*security.pam.loginLimits = [
     { domain = "game-server-1"; item = "nproc"; type = "hard"; value = "200"; }
     { domain = "game-server-1"; item = "nofile"; type = "soft"; value = "1024"; }
     { domain = "game-server-1"; item = "nofile"; type = "hard"; value = "4096"; }
@@ -92,7 +92,7 @@
 
       TasksMax = 200;
     };
-  };
+  };*/
 
   virtualisation = {
     containers.enable = true;
@@ -131,7 +131,7 @@
 
   networking.firewall.allowedTCPPorts = [22 80 443];
 
-  age.identityPaths = [
+  /*age.identityPaths = [
     "/home/mikinol/.ssh/id_ed25519"
   ];
   age.secrets = {
@@ -141,7 +141,7 @@
       group = "root";
       mode = "0400";
     };
-  };
+  };*/
 
   environment.systemPackages = with pkgs; [
     home-manager

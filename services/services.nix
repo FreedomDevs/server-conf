@@ -1,6 +1,6 @@
 {...}: {
   imports = [
     ./sshd.nix
-    ./nginx.nix
+    #./nginx.nix
   ];
 }
