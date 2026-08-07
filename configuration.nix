@@ -164,7 +164,7 @@
   ];
 
   environment.interactiveShellInit = ''
-    echo -e "${builtins.readFile ./files/banner.txt}"
+    echo -en "${builtins.readFile ./files/banner.txt}"
 
     if [ -n "$TERM" ] && ! ${pkgs.ncurses}/bin/infocmp "$TERM" >/dev/null 2>&1; then
       export TERM="xterm-256color"
