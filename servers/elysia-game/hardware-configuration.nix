@@ -2,6 +2,9 @@
   system.stateVersion = "26.05";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
+  systemd-boot.enable = true;
+  efi.canTouchEfiVariables = true;
+
   imports =
     [ (modulesPath + "/profiles/qemu-guest.nix")
     ];
