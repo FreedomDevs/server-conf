@@ -164,5 +164,11 @@
     #custom.eMC
   ];
 
+  environment.interactiveShellInit = ''
+    if [ -n "$TERM" ] && ! ${pkgs.ncurses}/bin/infocmp "$TERM" >/dev/null 2>&1; then
+      export TERM="xterm-256color"
+    fi
+  '';
+
   nix.settings.experimental-features = ["nix-command" "flakes"];
 }
