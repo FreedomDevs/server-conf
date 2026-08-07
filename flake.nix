@@ -103,6 +103,7 @@
   in {
     nixosConfigurations = {
       vm-server = mkSystem "vm-server" null;
+      elysia-game = mkSystem "elysia-game" null;
     };
   };
 }
