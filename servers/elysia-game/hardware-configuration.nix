@@ -47,7 +47,7 @@
   fileSystems."/home" = {
     device = "/dev/vda1";
     fsType = "btrfs";
-    options = ["subvol=root" "compress=zstd:3" "noatime" "discard=async"];
+    options = ["subvol=home" "compress=zstd:3" "noatime" "discard=async"];
   };
   fileSystems."/nix" = {
     device = "/dev/vda1";

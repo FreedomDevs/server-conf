@@ -41,8 +41,23 @@
     home = "/home/mikinol";
 
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ" # Мой ключ, для меня
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA sm44aksdmiki13877kfh@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII957WmPPCOJTsKjHS6dJ4OT+SObewPbOH1BK537mgsQ pc"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPngKu24f4aaEROijzY/YSpBBJsLLIfBq+0ri7HamSQA laptop"
+    ];
+  };
+
+  users.users.foksik = {
+    isNormalUser = true;
+    initialPassword = "123";
+    extraGroups = ["wheel" "podman" "proc-access"];
+
+    uid = 1002;
+
+    createHome = false;
+    home = "/home/foksik";
+
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJvj4GQR/TM/i1yZ3j8TTSJXZfOjOMY0zhAWen40+YPE foksik@nixos"
     ];
   };
 
