@@ -97,8 +97,8 @@
       MemorySwapMax = "2G";
       CPUQuota = "100%";
 
-      #SocketBindDeny="any";
-      #SocketBindAllow="3000-3999";
+      SocketBindDeny="any";
+      SocketBindAllow="3000-3999";
 
       #RestrictNetworkInterfaces="ens3 lo";
 
