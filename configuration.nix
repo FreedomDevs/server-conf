@@ -100,7 +100,7 @@
       SocketBindDeny="any";
       SocketBindAllow="3000-3999";
 
-      #RestrictNetworkInterfaces="ens3 lo";
+      RestrictNetworkInterfaces="ens3 lo";
 
       #IPAddressDeny = "any";
       #IPAddressAllow = "internet";
