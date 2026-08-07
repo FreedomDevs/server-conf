@@ -2,8 +2,11 @@
   system.stateVersion = "26.05";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/vda";
+  };
 
   imports =
     [ (modulesPath + "/profiles/qemu-guest.nix")
@@ -37,22 +40,22 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/vda2";
+    device = "/dev/vda1";
     fsType = "btrfs";
     options = ["subvol=root" "compress=zstd:3" "noatime" "discard=async"];
   };
   fileSystems."/home" = {
-    device = "/dev/vda2";
+    device = "/dev/vda1";
     fsType = "btrfs";
     options = ["subvol=root" "compress=zstd:3" "noatime" "discard=async"];
   };
   fileSystems."/nix" = {
-    device = "/dev/vda2";
+    device = "/dev/vda1";
     fsType = "btrfs";
     options = ["subvol=nix" "compress=zstd:9" "noatime" "discard=async"];
   };
   fileSystems."/swap" = {
-    device = "/dev/vda2";
+    device = "/dev/vda1";
     fsType = "btrfs";
     options = ["subvol=swap" "noatime" "discard=async"];
   };
