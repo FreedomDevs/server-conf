@@ -109,8 +109,8 @@
     };
   };
 
-  networking.firewall.allowedTCPPortRanges = [3000 3999];
-  networking.firewall.allowedUDPPortRanges = [3000 3999];
+  networking.firewall.allowedTCPPortRanges = [{ from = 3000; to = 3999; }];
+  networking.firewall.allowedUDPPortRanges = [{ from = 3000; to = 3999; }];
 
   virtualisation = {
     containers.enable = true;
