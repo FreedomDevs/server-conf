@@ -1,3 +1,0 @@
-#!/bin/sh
-rm nixos.qcow2
-. ./run

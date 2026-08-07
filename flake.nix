@@ -13,15 +13,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs-stable";
     agenix.inputs.darwin.follows = "";
 
-    ecli-src = {
-      url = "github:FreedomDevs/ECLI";
-      flake = false;
-    };
-
-    hyperbox-src = {
-      url = "git+https://github.com/mikinol/hyperbox?submodules=1";
-      flake = false;
-    };
+    mikinol-nix.url = "github:mikinol/mikinol-nix-flake";
+    mikinol-nix.inputs.nixpkgs.follows = "nixpkgs-stable";
 
     elysium-server-control-scripts-src = {
       url = "github:FreedomDevs/server-control-scripts";
@@ -44,12 +37,10 @@
     nixpkgs-stable,
     nixpkgs-unstable,
     agenix,
-    disko,
-    ecli-src,
-    hyperbox-src,
     elysium-server-control-scripts-src,
     svc-gateway-src,
     eMC-src,
+    mikinol-nix,
     ...
   }: let
     system = "x86_64-linux";
@@ -69,12 +60,13 @@
           (final: prev: {
             agenix = agenix.packages.${system}.default;
           })
+          (final: prev: {
+            mikinol-nix = mikinol-nix.packages.${system};
+          })
 
           (final: prev: {
             # Инициализируется после всего
             custom = final.callPackage ./pkgs.nix {
-              ecli-src = ecli-src;
-              hyperbox-src = hyperbox-src;
               elysium-server-control-scripts-src = elysium-server-control-scripts-src;
               svc-gateway-src = svc-gateway-src;
               eMC-src = eMC-src;
@@ -89,20 +81,26 @@
         specialArgs = {inherit device;};
 
         modules = [
-          {nixpkgs.pkgs = pkgs;}
-          {nixpkgs.hostPlatform = system;}
-
-          disko.nixosModules.disko
-
           "${self}/configuration.nix"
           "${self}/servers/${device}/hardware-configuration.nix"
-
           agenix.nixosModules.default
+
+          {
+            nixpkgs.pkgs = pkgs;
+            nixpkgs.hostPlatform = system;
+
+            nix.registry.nixpkgs.flake = nixpkgs-stable;
+            nix.registry.unstable.flake = nixpkgs-unstable;
+            nix.registry.mikinol-nix.to = {
+              type = "indirect";
+              id = "mikinol-nix";
+            };
+            nix.nixPath = ["nixpkgs=${nixpkgs-stable}"];
+          }
         ];
       };
   in {
     nixosConfigurations = {
-      vm-server = mkSystem "vm-server" null;
       elysia-game = mkSystem "elysia-game" null;
     };
   };

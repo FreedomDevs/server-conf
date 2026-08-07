@@ -25,23 +25,6 @@
         "type": "github"
       }
     },
-    "disko": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1781152676,
-        "narHash": "sha256-RxWs5ND31KzTG7wvMM+PMfUjyNpmIEr999lqNARaM5o=",
-        "owner": "nix-community",
-        "repo": "disko",
-        "rev": "ff8702b4de27f72b4c78573dfb89ec74e36abdf1",
-        "type": "github"
-      },
-      "original": {
-        "id": "disko",
-        "type": "indirect"
-      }
-    },
     "eMC-src": {
       "flake": false,
       "locked": {
@@ -114,34 +97,72 @@
     "hyperbox-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1783886647,
-        "narHash": "sha256-ui7EvQ1+HPif4n3ANEKg9U3nj9zyYiXb8X2D9SmtLNg=",
-        "ref": "refs/heads/master",
-        "rev": "bb0ed5c7292e68731712e05c6e4b3769aeea15aa",
-        "revCount": 34,
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/mikinol/hyperbox"
-      },
-      "original": {
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/mikinol/hyperbox"
-      }
-    },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1780930886,
-        "narHash": "sha256-rppURzHviaQN131F+nLiLdGfcb0uCd9gGP0E5+iw9MI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "8c3cede7ddc26bd659d2d383b5610efbd2c7a16e",
+        "lastModified": 1785521035,
+        "narHash": "sha256-qnAYF4ZhkwE4r4LvVducccUdjb/YMZFadDr01E6JtnI=",
+        "owner": "mikinol",
+        "repo": "hyperbox",
+        "rev": "14e9fd0e1af491fc876d8509560f0394c6060feb",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
+        "owner": "mikinol",
+        "repo": "hyperbox",
+        "type": "github"
+      }
+    },
+    "mikinol-nix": {
+      "inputs": {
+        "ecli-src": "ecli-src",
+        "hyperbox-src": "hyperbox-src",
+        "mikinolibc-src": "mikinolibc-src",
+        "my-linux-scripts-src": "my-linux-scripts-src",
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785520671,
+        "narHash": "sha256-TQB7L7Aa40P9LIkEfG2ujQjKE52JtC6J4PTRdnXnQ2s=",
+        "owner": "mikinol",
+        "repo": "mikinol-nix-flake",
+        "rev": "9a6285ef70bb748efedbabad7a30177e147d519f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mikinol",
+        "repo": "mikinol-nix-flake",
+        "type": "github"
+      }
+    },
+    "mikinolibc-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785517076,
+        "narHash": "sha256-jsRFn+CM8YMXwINyalPo1uO9+II1ZU9C4gJwvGhV45c=",
+        "owner": "mikinol",
+        "repo": "mikinolibc",
+        "rev": "f39fd3acfe66657bd76828ebaffa599fc6bac72c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mikinol",
+        "repo": "mikinolibc",
+        "type": "github"
+      }
+    },
+    "my-linux-scripts-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785944918,
+        "narHash": "sha256-sk/50tTljRfo7j8Kh+umI+/wtlOwR7vfXpDzYx6AQy0=",
+        "owner": "mikinol",
+        "repo": "myLinuxScripts",
+        "rev": "1d1d85dccb9a2d90142bb390a84795ead0d6bdcf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mikinol",
+        "repo": "myLinuxScripts",
         "type": "github"
       }
     },
@@ -180,12 +201,10 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "disko": "disko",
         "eMC-src": "eMC-src",
-        "ecli-src": "ecli-src",
         "elysium-server-control-scripts-src": "elysium-server-control-scripts-src",
         "home-manager": "home-manager",
-        "hyperbox-src": "hyperbox-src",
+        "mikinol-nix": "mikinol-nix",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "svc-gateway-src": "svc-gateway-src"

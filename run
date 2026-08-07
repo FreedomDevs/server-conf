@@ -1,2 +1,0 @@
-#!/bin/sh
-nix run .#nixosConfigurations.vm-server.config.system.build.vm --impure
