@@ -83,7 +83,7 @@
   };
 
   security.pam.loginLimits = [
-    { domain = "dead-cats"; item = "nproc"; type = "hard"; value = "200"; }
+    { domain = "dead-cats"; item = "nproc"; type = "hard"; value = "5000"; }
     { domain = "dead-cats"; item = "nofile"; type = "soft"; value = "1024"; }
     { domain = "dead-cats"; item = "nofile"; type = "hard"; value = "4096"; }
     { domain = "dead-cats"; item = "core"; type = "hard"; value = "0"; }
@@ -104,7 +104,7 @@
 
       #IPAddressDeny = "any";
 
-      TasksMax = 200;
+      TasksMax = 5000;
     };
   };
 

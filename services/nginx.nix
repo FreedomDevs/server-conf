@@ -100,6 +100,7 @@ in {
       sslCertificate = "${../certs/elysiac.fun.crt}";
       sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
+      root = "/";
       locations."= /".tryFiles = "${resourcepacksIndexHtml} =404";
       locations."~ ^/([^/]+)/(.+)$".tryFiles = "/home/$1/public/resourcepacks/$2 =404";
     };
