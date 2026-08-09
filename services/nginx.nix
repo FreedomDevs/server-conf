@@ -36,9 +36,9 @@ in {
       moreheaders
     ];
 
-    /*appendHttpConfig = ''
+    appendHttpConfig = ''
       lua_package_path "${pkgs.custom.svc-gateway.luaDependencies};";
-    '';*/
+    '';
 
     virtualHosts."default" = {
       default = true;
