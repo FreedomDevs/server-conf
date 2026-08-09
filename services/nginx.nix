@@ -24,7 +24,6 @@
   resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
 
   extraLuaPackages = [
-    pkgs.unstable.luajitPackages.lua-resty-core
     pkgs.unstable.luajitPackages.lua-resty-jwt
     pkgs.unstable.luajitPackages.lua-resty-http
     pkgs.unstable.luajitPackages.lua-resty-lrucache
@@ -33,26 +32,22 @@
     pkgs.custom.svc-gateway.lua-resty-websocket
   ];
 
-  luaPath = lib.concatMapStringsSep ";" (p: "${p}/share/lua/5.1/?.lua;${p}/share/lua/5.1/?/init.lua;${p}/lib/lua/5.1/?.lua;${p}/lib/lua/5.1/?/init.lua") extraLuaPackages;
+  luaPath = lib.concatMapStringsSep ";" (p: "${p}/share/lua/5.1/?.lua;${p}/share/lua/5.1/?/init.lua") extraLuaPackages;
   luaCPath = lib.concatMapStringsSep ";" (p: "${p}/lib/lua/5.1/?.so") extraLuaPackages;
 in {
   services.nginx = {
     enable = true;
-    package = pkgs.unstable.nginxMainline;
+    package = pkgs.unstable.openresty;
     user = "nginx";
     group = "nginx";
 
     additionalModules = with pkgs.unstable.nginxModules; [
-      echo
       brotli
-      moreheaders
-      lua
     ];
 
     appendHttpConfig = ''
-      lua_load_resty_core off;
-      lua_package_path "${luaPath};;";
-      lua_package_cpath "${luaCPath};;";
+      lua_package_path ";;${luaPath};;";
+      lua_package_cpath ";;${luaCPath};;";
     '';
 
     virtualHosts."default" = {
