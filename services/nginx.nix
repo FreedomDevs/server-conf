@@ -24,7 +24,7 @@ in {
     enable = true;
     package = pkgs.unstable.nginx;
     user = "nginx";
-    group = "nginx";
+    group = pkgs.lib.mkForce "nginx";
 
     additionalModules = with pkgs.nginxModules; [
       echo
