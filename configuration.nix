@@ -173,6 +173,11 @@
     fi
   '';
 
+  boot.kernel.sysctl = {
+    "net.ipv4.tcp_fastopen" = 3;
+    "kernel.pid_max" = 999999;
+  };
+
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = ["nix-command" "flakes"];
