@@ -17,7 +17,7 @@
     }
   ];
 
-  text = builtins.readFile ./files/resourcepacks_index.html;
+  text = builtins.readFile ../files/resourcepacks_index.html;
   resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
 in {
   services.nginx = {

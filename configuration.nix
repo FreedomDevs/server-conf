@@ -166,7 +166,7 @@
     #custom.eMC
   ];
 
-  users.motdFile = "./files/banner.txt";
+  users.motdFile = ./files/banner.txt;
   environment.interactiveShellInit = ''
     if [ -n "$TERM" ] && ! ${pkgs.ncurses}/bin/infocmp "$TERM" >/dev/null 2>&1; then
       export TERM="xterm-256color"
