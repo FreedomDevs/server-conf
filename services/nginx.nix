@@ -11,8 +11,8 @@
       extraParameters = ["quic"];
     }
     {
-      addr = "::1";
-      port = 80;
+      addr = "[::1]";
+      port = 81;
       extraParameters = ["fastopen=64"];
     }
   ];
