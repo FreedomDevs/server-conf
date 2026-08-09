@@ -31,14 +31,20 @@ in {
 
     additionalModules = with pkgs.unstable.nginxModules; [
       echo
-      lua
       brotli
       moreheaders
     ];
 
-    appendHttpConfig = ''
-      lua_package_path "${pkgs.custom.svc-gateway.luaDependencies};";
-    '';
+    lua.enable = true;
+    lua.extraPackages = [
+      pkgs.unstable.luajitPackages.lua-resty-core
+      pkgs.unstable.luajitPackages.lua-resty-jwt
+      pkgs.unstable.luajitPackages.lua-resty-http
+      pkgs.unstable.luajitPackages.lua-resty-lrucache
+      pkgs.unstable.luajitPackages.lua-resty-openssl
+      pkgs.unstable.luajitPackages.cjson
+      pkgs.custom.svc-gateway.lua-resty-websocket
+    ];
 
     virtualHosts."default" = {
       default = true;

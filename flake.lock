@@ -213,11 +213,11 @@
     "svc-gateway-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1786295882,
-        "narHash": "sha256-5ZHHQDH8W7XImngL8tuVYo7yHb3dG5g3fY33M1dG18s=",
+        "lastModified": 1786304669,
+        "narHash": "sha256-TbR6QndIcCuFVyoER7MQaVPrahu5WHY1NCtsxZfP7Oo=",
         "owner": "FreedomDevs",
         "repo": "svc-gateway",
-        "rev": "ad6801b917f6b270e3b2b8c0d93afbccb6d56b23",
+        "rev": "f154783924a79940105f595fc1d002d1faccc278",
         "type": "github"
       },
       "original": {
