@@ -166,7 +166,7 @@
     #custom.eMC
   ];
 
-  users.motd = builtins.replaceStrings [ "\\033" ] [ "\x1b" ] (builtins.readFile ./files/banner.txt);
+  users.motd = builtins.replaceStrings [ "\\033" ] [ "\033" ] (builtins.readFile ./files/banner.txt);
   environment.interactiveShellInit = ''
     if [ -n "$TERM" ] && ! ${pkgs.ncurses}/bin/infocmp "$TERM" >/dev/null 2>&1; then
       export TERM="xterm-256color"
