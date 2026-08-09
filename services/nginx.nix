@@ -35,6 +35,10 @@
   luaPath = lib.concatMapStringsSep ";" (p: "${p}/share/lua/5.1/?.lua;${p}/share/lua/5.1/?/init.lua") extraLuaPackages;
   luaCPath = lib.concatMapStringsSep ";" (p: "${p}/lib/lua/5.1/?.so") extraLuaPackages;
 in {
+  systemd.services.nginx.serviceConfig = {
+    ProtectHome = "no";
+  };
+
   services.nginx = {
     enable = true;
     package = pkgs.unstable.openresty;
