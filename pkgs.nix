@@ -1,5 +1,6 @@
 {
   callPackage,
+  unstable,
   stdenv,
   elysium-server-control-scripts-src,
   svc-gateway-src,
@@ -19,6 +20,6 @@ eMC-src,
     else stdenv;
 in {
   elysium-server-control-scripts = callPackage elysium-server-control-scripts-src {};
-  svc-gateway = callPackage svc-gateway-src {};
+  svc-gateway = unstable.callPackage svc-gateway-src {};
   eMC = callPackage eMC-src {stdenv = optimizedStdenv;};
 }
