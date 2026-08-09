@@ -36,6 +36,7 @@
     self,
     nixpkgs-stable,
     nixpkgs-unstable,
+    home-manager,
     agenix,
     elysium-server-control-scripts-src,
     svc-gateway-src,
@@ -91,10 +92,8 @@
 
             nix.registry.nixpkgs.flake = nixpkgs-stable;
             nix.registry.unstable.flake = nixpkgs-unstable;
-            nix.registry.mikinol-nix.to = {
-              type = "indirect";
-              id = "mikinol-nix";
-            };
+            nix.registry.home-manager.flake = home-manager;
+            nix.registry.mikinol-nix.flake = mikinol-nix;
             nix.nixPath = ["nixpkgs=${nixpkgs-stable}"];
           }
         ];
