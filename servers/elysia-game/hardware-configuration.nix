@@ -1,7 +1,6 @@
 {lib, modulesPath, ...}: {
   system.stateVersion = "26.05";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub = {
     enable = true;
@@ -19,6 +18,7 @@
 
   networking = {
     useDHCP = false;
+    hostName = "elysia-game";
 
     interfaces.ens3 = {
       ipv4.addresses = [{
