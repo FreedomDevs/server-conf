@@ -10,14 +10,21 @@
       port = 443;
       extraParameters = ["quic"];
     }
+    {
+      addr = "::1";
+      port = 80;
+      extraParameters = ["fastopen=64"];
+    }
   ];
 
-  test_cert = "${../cert/test.crt}";
-  test_key = "${../cert/test.key}";
+  text = builtins.readFile ./files/resourcepacks_index.html;
+  resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
 in {
   services.nginx = {
-    package = pkgs.unstable.nginx;
     enable = true;
+    package = pkgs.unstable.nginx;
+    user = "nginx";
+    group = "nginx";
 
     additionalModules = with pkgs.nginxModules; [
       echo
@@ -26,9 +33,9 @@ in {
       moreheaders
     ];
 
-    appendHttpConfig = ''
+    /*appendHttpConfig = ''
       lua_package_path "${pkgs.custom.svc-gateway.luaDependencies};";
-    '';
+    '';*/
 
     virtualHosts."default" = {
       default = true;
@@ -36,13 +43,13 @@ in {
         {
           addr = "[::]";
           port = 80;
-          extraParameters = ["fastopen=256" "ipv6only=off" "default_server"];
+          extraParameters = ["fastopen=64" "ipv6only=off" "default_server"];
         }
         {
           addr = "[::]";
           port = 443;
           ssl = true;
-          extraParameters = ["fastopen=256" "ipv6only=off" "default_server"];
+          extraParameters = ["fastopen=64" "ipv6only=off" "default_server"];
         }
         {
           addr = "[::]";
@@ -66,34 +73,21 @@ in {
         }
       ];
 
-      serverName = "test.lan";
-      serverAliases = ["*.test.lan"];
+      serverName = "elysiac.fun";
+      serverAliases = ["*.elysiac.fun" "dead-cats.su" "*.dead-cats.su" "runa-trip.fun" "*.runa-trip.fun"];
 
       extraConfig = ''
         return 301 https://$host$request_uri;
       '';
     };
 
-    virtualHosts."test.lan" = {
+    virtualHosts."resourcepacks.elysiac.fun" = {
       listen = defaultListen;
+      sslCertificate = "${../certs/elysiac.fun.crt}";
+      sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
-      onlySSL = true;
-      sslCertificate = test_cert;
-      sslCertificateKey = test_key;
-    };
-
-    virtualHosts."resourcepacks.test.lan" = {
-      listen = defaultListen;
-
-      root = "/var/www/resourcepacks";
-
-      onlySSL = true;
-      sslCertificate = test_cert;
-      sslCertificateKey = test_key;
-
-      extraConfig = ''
-        index index.html;
-      '';
+      locations."= /".alias = "${resourcepacksIndexHtml}";
+      locations."~ ^/([^/]+)/(.+)$".alias = "/home/$1/public/resourcepacks/$2";
     };
   };
 }

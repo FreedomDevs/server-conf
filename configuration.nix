@@ -1,6 +1,5 @@
 {
   pkgs,
-  device,
   ...
 }: {
   imports = [
@@ -15,6 +14,9 @@
   users.groups.web-access = { gid = 1002; }; # Даёт доступ к /var/www
 
   users.groups.proc-access = { gid = 1003; };
+  users.groups.admins = { gid = 1004; };
+
+  users.groups.nginx = { gid = 1005; };
 
   systemd.services.remount-proc = {
     description = "Remount /proc with hidepid and custom GID on boot";
@@ -33,7 +35,7 @@
   users.users.mikinol = {
     isNormalUser = true;
     initialPassword = "123";
-    extraGroups = ["wheel" "podman" "proc-access"];
+    extraGroups = ["wheel" "podman" "proc-access" "admins"];
 
     uid = 1001;
 
@@ -49,7 +51,7 @@
   users.users.foksik = {
     isNormalUser = true;
     initialPassword = "123";
-    extraGroups = ["wheel" "podman" "proc-access"];
+    extraGroups = ["wheel" "podman" "proc-access" "admins"];
 
     uid = 1002;
 
@@ -108,6 +110,8 @@
     };
   };
 
+  networking.firewall.allowedTCPPorts = [22 80 443];
+  networking.firewall.allowedUDPPorts = [443];
   networking.firewall.allowedTCPPortRanges = [{ from = 3000; to = 3999; }];
   networking.firewall.allowedUDPPortRanges = [{ from = 3000; to = 3999; }];
 
@@ -146,16 +150,14 @@
     ];
   };
 
-  networking.firewall.allowedTCPPorts = [22 80 443];
-
   age.identityPaths = [
     "/root/.ssh/id_ed25519"
   ];
   age.secrets = {
-    "resourcepack_namespace" = {
-      file = ./servers/${device}/secrets/resourcepack_namespace.age;
-      owner = "root";
-      group = "root";
+    "elysiac.fun.key" = {
+      file = ./certs/elysiac.fun.key;
+      owner = "nginx";
+      group = "0";
       mode = "0400";
     };
   };
