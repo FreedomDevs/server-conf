@@ -106,7 +106,8 @@ in {
 
       root = "/";
       locations."= /".tryFiles = "${resourcepacksIndexHtml} =404";
-      locations."~ ^/([^/]+)/((?:(?!\.\.).)+)$".tryFiles = "/home/$1/public/resourcepacks/$2 =404";
+      locations."~ ^/([^/]+)/([^/]+)$".tryFiles = "/home/$1/public/resourcepacks/$2 =404";
+      locations."/".extraConfig = "return 404;";
     };
   };
 }
