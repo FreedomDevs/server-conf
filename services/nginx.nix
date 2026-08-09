@@ -20,14 +20,14 @@
     }
 */
 
-    resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" (builtins.readFile ../files/resourcepacks_index.html);
+    resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" (builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile ../files/resourcepacks_index.html));
 
   internalHtml = pkgs.runCommand "internal_html" {
     nativeBuildInputs = [ pkgs.brotli ];
   } ''
     mkdir -p $out
 
-    cp ${../files/resourcepacks_index.html} $out/resourcepacks_index.html
+    sed -e 's/    //g' -e 's/\n//g' -e 's/: /:/g' -e 's/ {/{/g' < ${../files/resourcepacks_index.html} > $out/resourcepacks_index.html
     brotli -q 11 --keep $out/resourcepacks_index.html
   '';
   internalHtmlETag = "\"${builtins.substring 0 32 (baseNameOf (toString resourcepacksIndexHtml))}\"";
@@ -103,6 +103,8 @@ in {
       serverAliases = ["*.elysiac.fun" "dead-cats.su" "*.dead-cats.su" "runa-trip.fun" "*.runa-trip.fun"];
 
       extraConfig = ''
+        more_clear_headers "date";
+        more_clear_headers "server";
         return 301 https://$host$request_uri;
       '';
     };
@@ -139,8 +141,8 @@ in {
           more_clear_headers "date";
           more_clear_headers "server";
 
-          disable_symlinks on;
-          error_page 403 =404;
+          disable_symlinks on from=/home/$1;
+          error_page 403 = 404;
         '';
       };
     };
