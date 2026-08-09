@@ -26,7 +26,7 @@ in {
     user = "nginx";
     group = "nginx";
 
-    additionalModules = with pkgs.nginxModules; [
+    additionalModules = with pkgs.unstable.nginxModules; [
       echo
       lua
       brotli
