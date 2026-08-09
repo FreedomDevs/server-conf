@@ -20,8 +20,17 @@
     }
 */
 
-  text = builtins.readFile ../files/resourcepacks_index.html;
-  resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
+    resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" (builtins.readFile ../files/resourcepacks_index.html);
+
+  internalHtml = pkgs.runCommand "internal_html" {
+    nativeBuildInputs = [ pkgs.brotli ];
+  } ''
+    mkdir -p $out
+
+    cp ${../files/resourcepacks_index.html} $out/resourcepacks_index.html
+    brotli -q 11 --keep $out/resourcepacks_index.html
+  '';
+  internalHtmlETag = "\"${builtins.substring 0 32 (baseNameOf (toString resourcepacksIndexHtml))}\"";
 
   extraLuaPackages = [
     pkgs.unstable.luajitPackages.lua-resty-jwt
@@ -104,10 +113,36 @@ in {
       sslCertificate = "${../certs/elysiac.fun.crt}";
       sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
-      root = "/";
-      locations."= /".tryFiles = "${resourcepacksIndexHtml} =404";
-      locations."~ ^/([^/]+)/([^/]+)$".tryFiles = "/home/$1/public/resourcepacks/$2 =404";
       locations."/".extraConfig = "return 404;";
+      locations."= /" = {
+        root = "/";
+        tryFiles = "${internalHtml}/resourcepacks_index.html =404";
+        extraConfig = ''
+          more_clear_headers "last-modified";
+          more_clear_headers "date";
+          more_clear_headers "server";
+          if_modified_since off;
+          etag off;
+
+          brotli_static on;
+
+          more_set_headers 'etag: ${internalHtmlETag}';
+          if ($http_if_none_match = '${internalHtmlETag}') {
+            return 304;
+          }
+        '';
+      };
+      locations."~ ^/([^/]+)/([^/]+)$" = {
+        alias = "/home/$1/public/resourcepacks/$2";
+        extraConfig = ''
+          more_clear_headers "last-modified";
+          more_clear_headers "date";
+          more_clear_headers "server";
+
+          disable_symlinks on;
+          error_page 403 =404;
+        '';
+      };
     };
   };
 }
