@@ -10,12 +10,15 @@
       port = 443;
       extraParameters = ["quic"];
     }
-    {
+  ];
+
+  /*
+{
       addr = "[::1]";
       port = 81;
       extraParameters = ["fastopen=64"];
     }
-  ];
+*/
 
   text = builtins.readFile ../files/resourcepacks_index.html;
   resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
@@ -83,6 +86,7 @@ in {
 
     virtualHosts."resourcepacks.elysiac.fun" = {
       listen = defaultListen;
+      onlySSL = true;
       sslCertificate = "${../certs/elysiac.fun.crt}";
       sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
