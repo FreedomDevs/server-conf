@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, lib, ...}: let
   defaultListen = [
     {
       addr = "[::]";
@@ -22,10 +22,23 @@
 
   text = builtins.readFile ../files/resourcepacks_index.html;
   resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" text;
+
+  extraLuaPackages = [
+    pkgs.unstable.luajitPackages.lua-resty-core
+    pkgs.unstable.luajitPackages.lua-resty-jwt
+    pkgs.unstable.luajitPackages.lua-resty-http
+    pkgs.unstable.luajitPackages.lua-resty-lrucache
+    pkgs.unstable.luajitPackages.lua-resty-openssl
+    pkgs.unstable.luajitPackages.cjson
+    pkgs.custom.svc-gateway.lua-resty-websocket
+  ];
+
+  luaPath = lib.concatMapStringsSep ";" (p: "${p}/share/lua/5.1/?.lua;${p}/share/lua/5.1/?/init.lua;${p}/lib/lua/5.1/?.lua;${p}/lib/lua/5.1/?/init.lua") extraLuaPackages;
+  luaCPath = lib.concatMapStringsSep ";" (p: "${p}/lib/lua/5.1/?.so") extraLuaPackages;
 in {
   services.nginx = {
     enable = true;
-    package = pkgs.unstable.nginx;
+    package = pkgs.unstable.nginxMainline;
     user = "nginx";
     group = "nginx";
 
@@ -33,18 +46,14 @@ in {
       echo
       brotli
       moreheaders
+      lua
     ];
 
-    lua.enable = true;
-    lua.extraPackages = [
-      pkgs.unstable.luajitPackages.lua-resty-core
-      pkgs.unstable.luajitPackages.lua-resty-jwt
-      pkgs.unstable.luajitPackages.lua-resty-http
-      pkgs.unstable.luajitPackages.lua-resty-lrucache
-      pkgs.unstable.luajitPackages.lua-resty-openssl
-      pkgs.unstable.luajitPackages.cjson
-      pkgs.custom.svc-gateway.lua-resty-websocket
-    ];
+    appendHttpConfig = ''
+      lua_load_resty_core off;
+      lua_package_path "${luaPath};;";
+      lua_package_cpath "${luaCPath};;";
+    '';
 
     virtualHosts."default" = {
       default = true;
