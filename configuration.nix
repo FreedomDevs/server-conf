@@ -16,8 +16,6 @@
   users.groups.proc-access = { gid = 1003; };
   users.groups.admins = { gid = 1004; };
 
-  users.groups.nginx = { gid = 1005; };
-
   systemd.services.remount-proc = {
     description = "Remount /proc with hidepid and custom GID on boot";
     
