@@ -146,5 +146,25 @@ in {
         '';
       };
     };
+
+    virtualHosts."ntfy.elysiac.fun" = {
+      listen = defaultListen;
+      onlySSL = true;
+      sslCertificate = "${../certs/elysiac.fun.crt}";
+      sslCertificateKey = "/run/agenix/elysiac.fun.key";
+
+      locations."/" = {
+        proxyPass = "http://unix:/var/sockets/ntfy/sock;";
+        proxyWebsockets = true;
+
+        extraConfig = ''
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          
+          proxy_read_timeout 1d;
+          proxy_send_timeout 1d;
+        '';
+      };
+    };
   };
 }
