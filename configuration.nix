@@ -192,7 +192,13 @@
   ];
   age.secrets = {
     "elysiac.fun.key" = {
-      file = ./certs/elysiac.fun.key;
+      file = ./files/certs/elysiac.fun.key;
+      owner = "nginx";
+      group = "0";
+      mode = "0400";
+    };
+    "elysia-game-ech_elysiac.fun.pem" = {
+      file = ./files/certs/elysia-game-ech_elysiac.fun.pem;
       owner = "nginx";
       group = "0";
       mode = "0400";

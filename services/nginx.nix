@@ -1,26 +1,8 @@
 {pkgs, lib, ...}: let
   defaultListen = [
-    {
-      addr = "[::]";
-      port = 443;
-      ssl = true;
-    }
-    {
-      addr = "[::]";
-      port = 443;
-      extraParameters = ["quic"];
-    }
+    {addr = "[::]";port = 443;ssl = true;}
+    {addr = "[::]";port = 443;extraParameters = ["quic"];}
   ];
-
-  /*
-{
-      addr = "[::1]";
-      port = 81;
-      extraParameters = ["fastopen=64"];
-    }
-*/
-
-    resourcepacksIndexHtml = pkgs.writeText "resourcepacks_index.html" (builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile ../files/resourcepacks_index.html));
 
   internalHtml = pkgs.runCommand "internal_html" {
     nativeBuildInputs = [ pkgs.brotli ];
@@ -29,8 +11,10 @@
 
     sed -e 's/    //g' -e 's/\n//g' -e 's/: /:/g' -e 's/ {/{/g' < ${../files/resourcepacks_index.html} > $out/resourcepacks_index.html
     brotli -q 11 --keep $out/resourcepacks_index.html
+
+    sed -e 's/    //g' -e 's/\n//g' -e 's/: /:/g' -e 's/ {/{/g' < ${../files/elysiac_index.html} > $out/elysiac_index.html
   '';
-  internalHtmlETag = "\"${builtins.substring 0 32 (baseNameOf (toString resourcepacksIndexHtml))}\"";
+  internalHtmlETag = "\"${builtins.substring 0 32 (baseNameOf (toString internalHtml))}\"";
 
   extraLuaPackages = [
     pkgs.unstable.luajitPackages.lua-resty-jwt
@@ -50,7 +34,7 @@ in {
 
   services.nginx = {
     enable = true;
-    package = pkgs.unstable.openresty;
+    package = (pkgs.unstable.openresty.override {openssl = pkgs.unstable.openssl_4_0;});
     user = "nginx";
     group = "nginx";
 
@@ -92,12 +76,7 @@ in {
     };
 
     virtualHosts."http" = {
-      listen = [
-        {
-          addr = "[::]";
-          port = 80;
-        }
-      ];
+      listen = [{addr = "[::]";port = 80;}];
 
       serverName = "elysiac.fun";
       serverAliases = ["*.elysiac.fun" "dead-cats.su" "*.dead-cats.su" "runa-trip.fun" "*.runa-trip.fun"];
@@ -109,10 +88,37 @@ in {
       '';
     };
 
+    virtualHosts."elysiac.fun" = {
+      listen = defaultListen;
+      onlySSL = true;
+      sslCertificate = "${../files/certs/elysiac.fun.crt}";
+      sslCertificateKey = "/run/agenix/elysiac.fun.key";
+
+      locations."= /" = {
+        root = "/";
+        tryFiles = "${internalHtml}/elysiac_index.html =404";
+        extraConfig = ''
+          more_clear_headers "last-modified";
+          more_clear_headers "server";
+          if_modified_since off;
+          etag off;
+
+          brotli_static on;
+
+          more_set_headers 'etag: ${internalHtmlETag}';
+          if ($http_if_none_match ~ '${internalHtmlETag}') {
+            return 304;
+          }
+        '';
+      };
+      locations."/".extraConfig = "return 404;";
+      extraConfig = "ssl_ech_file /run/agenix/elysia-game-ech_elysiac.fun.pem;";
+    };
+
     virtualHosts."resourcepacks.elysiac.fun" = {
       listen = defaultListen;
       onlySSL = true;
-      sslCertificate = "${../certs/elysiac.fun.crt}";
+      sslCertificate = "${../files/certs/elysiac.fun.crt}";
       sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
       locations."/".extraConfig = "return 404;";
@@ -121,7 +127,6 @@ in {
         tryFiles = "${internalHtml}/resourcepacks_index.html =404";
         extraConfig = ''
           more_clear_headers "last-modified";
-          more_clear_headers "date";
           more_clear_headers "server";
           if_modified_since off;
           etag off;
@@ -129,7 +134,7 @@ in {
           brotli_static on;
 
           more_set_headers 'etag: ${internalHtmlETag}';
-          if ($http_if_none_match = '${internalHtmlETag}') {
+          if ($http_if_none_match ~ '${internalHtmlETag}') {
             return 304;
           }
         '';
@@ -138,33 +143,36 @@ in {
         alias = "/home/$1/public/resourcepacks/$2";
         extraConfig = ''
           more_clear_headers "last-modified";
-          more_clear_headers "date";
           more_clear_headers "server";
 
           disable_symlinks on from=/home/$1;
           error_page 403 = 404;
         '';
       };
+      extraConfig = "ssl_ech_file /run/agenix/elysia-game-ech_elysiac.fun.pem;";
     };
 
     virtualHosts."ntfy.elysiac.fun" = {
       listen = defaultListen;
       onlySSL = true;
-      sslCertificate = "${../certs/elysiac.fun.crt}";
+      sslCertificate = "${../files/certs/elysiac.fun.crt}";
       sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
       locations."/" = {
-        proxyPass = "http://unix:/var/sockets/ntfy/sock;";
+        proxyPass = "http://unix:/var/sockets/ntfy/sock";
         proxyWebsockets = true;
 
         extraConfig = ''
+          more_clear_headers "server";
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Authorization $http_authorization;
           
           proxy_read_timeout 1d;
           proxy_send_timeout 1d;
         '';
       };
+      extraConfig = "ssl_ech_file /run/agenix/elysia-game-ech_elysiac.fun.pem;";
     };
   };
 }
