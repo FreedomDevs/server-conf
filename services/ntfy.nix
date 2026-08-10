@@ -1,5 +1,5 @@
 {...}: {
-  systemd.services.ntfy-sh.serviceConfig.ReadWritePaths = [ "/var/sockets/ntfy" ];
+  systemd.services.ntfy-sh.serviceConfig.ReadWritePaths = ["/var/sockets/ntfy"];
 
   services.ntfy-sh = {
     enable = true;
