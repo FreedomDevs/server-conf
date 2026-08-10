@@ -1,5 +1,8 @@
 {...}: {
   systemd.tmpfiles.rules = [
+    "d /var/sockets 0001 0 0"
+
+
     "d /home 0010 0 users"
     "a /home - - - - user::---,user:nginx:--x,group::--x,group:admins:r-x,mask::r-x,other::---"
 

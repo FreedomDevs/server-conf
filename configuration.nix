@@ -73,7 +73,7 @@
 
     packages = with pkgs; [
       openjdk25_headless
-      custom.elysium-server-control-scripts
+      #custom.elysium-server-control-scripts
     ];
 
     openssh.authorizedKeys.keys = [
@@ -82,11 +82,32 @@
     ];
   };
 
+  users.users.forki = {
+    isNormalUser = true;
+    hashedPassword = "*";
+    extraGroups = ["mc-admins"];
+
+    uid = 1101;
+
+    createHome = false;
+    home = "/home/forki";
+
+
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE88gLFnPEgMWTPkQO3OqJ5jQdE7bvl+p6VxIkWMMdXe forki@debian"
+    ];
+  };
+
   security.pam.loginLimits = [
     { domain = "dead-cats"; item = "nproc"; type = "hard"; value = "5000"; }
     { domain = "dead-cats"; item = "nofile"; type = "soft"; value = "1024"; }
     { domain = "dead-cats"; item = "nofile"; type = "hard"; value = "4096"; }
-    { domain = "dead-cats"; item = "core"; type = "hard"; value = "0"; }
+    #{ domain = "dead-cats"; item = "core"; type = "hard"; value = "0"; }
+
+    { domain = "forki"; item = "nproc"; type = "hard"; value = "500"; }
+    { domain = "forki"; item = "nofile"; type = "soft"; value = "1024"; }
+    { domain = "forki"; item = "nofile"; type = "hard"; value = "4096"; }
+    #{ domain = "forki"; item = "core"; type = "hard"; value = "0"; }
   ];
 
   systemd.slices."user-1100" = {
@@ -105,6 +126,24 @@
       #IPAddressDeny = "any";
 
       TasksMax = 5000;
+    };
+  };
+  systemd.slices."user-1101" = {
+    sliceConfig = {
+      MemoryLow="0.5G";
+      MemoryHigh = "1.5G";
+      MemoryMax = "2G";
+      MemorySwapMax = "1G";
+      CPUQuota = "50%";
+
+      SocketBindDeny="any";
+      SocketBindAllow="4000-4999";
+
+      RestrictNetworkInterfaces="ens3 lo";
+
+      #IPAddressDeny = "any";
+
+      TasksMax = 500;
     };
   };
 
