@@ -102,21 +102,19 @@
     { domain = "dead-cats"; item = "nproc"; type = "hard"; value = "5000"; }
     { domain = "dead-cats"; item = "nofile"; type = "soft"; value = "1024"; }
     { domain = "dead-cats"; item = "nofile"; type = "hard"; value = "4096"; }
-    #{ domain = "dead-cats"; item = "core"; type = "hard"; value = "0"; }
 
     { domain = "forki"; item = "nproc"; type = "hard"; value = "500"; }
     { domain = "forki"; item = "nofile"; type = "soft"; value = "1024"; }
     { domain = "forki"; item = "nofile"; type = "hard"; value = "4096"; }
-    #{ domain = "forki"; item = "core"; type = "hard"; value = "0"; }
   ];
 
   systemd.slices."user-1100" = {
     sliceConfig = {
       MemoryLow="2G";
-      MemoryHigh = "4.5G";
-      MemoryMax = "5G";
+      MemoryHigh = "4.6G";
+      MemoryMax = "5.1G";
       MemorySwapMax = "2G";
-      CPUQuota = "100%";
+      CPUQuota = "125%";
 
       SocketBindDeny="any";
       SocketBindAllow="3000-3999";
@@ -130,11 +128,10 @@
   };
   systemd.slices."user-1101" = {
     sliceConfig = {
-      MemoryLow="0.5G";
-      MemoryHigh = "1.5G";
-      MemoryMax = "2G";
+      MemoryHigh = "0.7G";
+      MemoryMax = "1.0G";
       MemorySwapMax = "1G";
-      CPUQuota = "50%";
+      CPUQuota = "5%";
 
       SocketBindDeny="any";
       SocketBindAllow="4000-4999";

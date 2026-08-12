@@ -34,6 +34,6 @@ in {
       lua_package_cpath ";;${luaCPath};;";
     '';
 
-    virtualHosts = import ./nginx/virtualhosts.nix;
+    virtualHosts = import ./nginx/virtualhosts.nix { inherit pkgs; };
   };
 }

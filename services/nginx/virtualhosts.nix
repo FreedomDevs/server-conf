@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs}: let
   defaultListen = [
     {
       addr = "[::]";
@@ -18,10 +18,10 @@
     } ''
       mkdir -p $out
 
-      sed -e 's/    //g' -e 's/: /:/g' -e 's/ {/{/g' < ${../files/resourcepacks_index.html} | tr -d '\n' > $out/resourcepacks_index.html
+      sed -e 's/    //g' -e 's/: /:/g' -e 's/ {/{/g' < ${../../files/resourcepacks_index.html} | tr -d '\n' > $out/resourcepacks_index.html
       brotli -q 11 --keep $out/resourcepacks_index.html
 
-      sed -e 's/    //g' -e -e 's/: /:/g' -e 's/ {/{/g' < ${../files/elysiac_index.html} | tr -d '\n' > $out/elysiac_index.html
+      sed -e 's/    //g' -e 's/: /:/g' -e 's/ {/{/g' < ${../../files/elysiac_index.html} | tr -d '\n' > $out/elysiac_index.html
       brotli -q 11 --keep $out/elysiac_index.html
     '';
   internalHtmlETag = "\"${builtins.substring 0 32 (baseNameOf (toString internalHtml))}\"";
@@ -63,13 +63,13 @@ in {
     serverName = "elysiac.fun";
     serverAliases = ["*.elysiac.fun" "dead-cats.su" "*.dead-cats.su" "runa-trip.fun" "*.runa-trip.fun"];
     extraConfig = ''more_clear_headers "date";more_clear_headers "server";'';
-    return = "301 https://$host$request_uri";
+    locations."/".return = "301 https://$host$request_uri";
   };
 
   "elysiac.fun" = {
     listen = defaultListen;
     onlySSL = true;
-    sslCertificate = "${../files/certs/elysiac.fun.crt}";
+    sslCertificate = "${../../files/certs/elysiac.fun.crt}";
     sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
     locations."/".return = 404;
@@ -97,7 +97,7 @@ in {
   "resourcepacks.elysiac.fun" = {
     listen = defaultListen;
     onlySSL = true;
-    sslCertificate = "${../files/certs/elysiac.fun.crt}";
+    sslCertificate = "${../../files/certs/elysiac.fun.crt}";
     sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
     locations."/".return = 404;
@@ -135,7 +135,7 @@ in {
   "ntfy.elysiac.fun" = {
     listen = defaultListen;
     onlySSL = true;
-    sslCertificate = "${../files/certs/elysiac.fun.crt}";
+    sslCertificate = "${../../files/certs/elysiac.fun.crt}";
     sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
     locations."/" = {
