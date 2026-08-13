@@ -84,7 +84,7 @@ in {
 
     locations."/" = {
       root = "/var/www/www-admin";
-      tryFiles = "$uri $uri/ =404";
+      tryFiles = "$uri /index.html =404";
       extraConfig = "add_header Cache-Control \"public, max-age=120, stale-if-error=31536000\";";
     };
     extraConfig = "ssl_ech_file /run/agenix/elysia-game-ech_elysiac.fun.pem;";
