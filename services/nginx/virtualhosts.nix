@@ -20,9 +20,6 @@
 
       sed -e 's/    //g' -e 's/: /:/g' -e 's/ {/{/g' < ${../../files/resourcepacks_index.html} | tr -d '\n' > $out/resourcepacks_index.html
       brotli -q 11 --keep $out/resourcepacks_index.html
-
-      sed -e 's/    //g' -e 's/: /:/g' -e 's/ {/{/g' < ${../../files/elysiac_index.html} | tr -d '\n' > $out/elysiac_index.html
-      brotli -q 11 --keep $out/elysiac_index.html
     '';
   internalHtmlETag = "\"${builtins.substring 0 32 (baseNameOf (toString internalHtml))}\"";
 in {
@@ -72,24 +69,10 @@ in {
     sslCertificate = "${../../files/certs/elysiac.fun.crt}";
     sslCertificateKey = "/run/agenix/elysiac.fun.key";
 
-    locations."/".return = 404;
-    locations."= /" = {
-      root = "/";
-      tryFiles = "${internalHtml}/elysiac_index.html =404";
-      extraConfig = ''
-        more_clear_headers -s 304 "Content-Type";
-        more_clear_headers "last-modified";
-        more_clear_headers "server";
-        if_modified_since off;
-        etag off;
-
-        brotli_static on;
-
-        more_set_headers 'etag: ${internalHtmlETag}';
-        if ($http_if_none_match ~ '${internalHtmlETag}') {
-          return 304;
-        }
-      '';
+    locations."/" = {
+      root = "/var/www/www-main";
+      tryFiles = "$uri $uri/ =404";
+      extraConfig = "add_header Cache-Control \"public, max-age=120, stale-if-error=31536000\";";
     };
     extraConfig = "ssl_ech_file /run/agenix/elysia-game-ech_elysiac.fun.pem;";
   };
