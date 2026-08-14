@@ -146,8 +146,8 @@
 
   networking.firewall.allowedTCPPorts = [22 80 443 25565];
   networking.firewall.allowedUDPPorts = [443];
-  networking.firewall.allowedTCPPortRanges = [{ from = 3000; to = 3999; }];
-  networking.firewall.allowedUDPPortRanges = [{ from = 3000; to = 3999; }];
+  networking.firewall.allowedTCPPortRanges = [{ from = 3000; to = 3999; } { from = 4000; to = 4999; }];
+  networking.firewall.allowedUDPPortRanges = [{ from = 3000; to = 3999; } { from = 4000; to = 4999; }];
 
   virtualisation = {
     containers.enable = true;
