@@ -34,6 +34,13 @@ in {
       lua_package_cpath ";;${luaCPath};;";
     '';
 
+    upstreams = {
+      "map-wolp" = {
+        extraConfig = "keepalive 4;";
+        servers."161.104.45.22:1256" = {};
+      };
+    };
+
     virtualHosts = import ./nginx/virtualhosts.nix { inherit pkgs; };
   };
 }

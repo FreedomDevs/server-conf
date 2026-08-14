@@ -150,4 +150,12 @@ in {
     };
     extraConfig = "ssl_ech_file /run/agenix/elysia-game-ech_elysiac.fun.pem;";
   };
+
+  "map-wolp.elysiac.fun" = {
+    listen = defaultListen;
+    onlySSL = true;
+    sslCertificate = "${../../files/certs/elysiac.fun.crt}";
+    sslCertificateKey = "/run/agenix/elysiac.fun.key";
+    locations."/".proxyPass = "http://map-wolp";
+  };
 }
