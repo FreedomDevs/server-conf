@@ -110,11 +110,11 @@
 
   systemd.slices."user-1100" = {
     sliceConfig = {
-      MemoryLow="2G";
-      MemoryHigh = "4.6G";
-      MemoryMax = "5.1G";
-      MemorySwapMax = "2G";
-      CPUQuota = "125%";
+      MemoryLow="1.5G";
+      MemoryHigh = "4.5G";
+      MemoryMax = "4.8G";
+      MemorySwapMax = "3G";
+      CPUQuota = "175%";
 
       SocketBindDeny="any";
       SocketBindAllow="3000-3999";
@@ -128,10 +128,10 @@
   };
   systemd.slices."user-1101" = {
     sliceConfig = {
-      MemoryHigh = "0.7G";
-      MemoryMax = "1.0G";
-      MemorySwapMax = "1G";
-      CPUQuota = "5%";
+      MemoryHigh = "0.5G";
+      MemoryMax = "0.7G";
+      MemorySwapMax = "0.2G";
+      CPUQuota = "3%";
 
       SocketBindDeny="any";
       SocketBindAllow="4000-4999";

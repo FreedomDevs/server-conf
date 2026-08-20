@@ -39,6 +39,18 @@
     nameservers = [ "8.8.8.8" "8.8.4.4" ];
   };
 
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+    priority = 100;
+  };
+  swapDevices = [ {
+    device = "/swapfile";
+    size = 2 * 1024;
+    priority = 10;
+  } ];
+
   fileSystems."/" = {
     device = "/dev/vda1";
     fsType = "btrfs";
