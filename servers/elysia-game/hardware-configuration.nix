@@ -66,9 +66,4 @@
     fsType = "btrfs";
     options = ["subvol=nix" "compress=zstd:9" "noatime" "discard=async"];
   };
-  fileSystems."/swap" = {
-    device = "/dev/vda1";
-    fsType = "btrfs";
-    options = ["subvol=swap" "noatime" "discard=async"];
-  };
 }
