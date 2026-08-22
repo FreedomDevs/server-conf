@@ -181,6 +181,15 @@
           }
         ];
       }
+      {
+        groups = ["admins"];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/rsync";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
     ];
   };
 
@@ -205,6 +214,7 @@
   environment.systemPackages = with pkgs; [
     home-manager
     git
+    rsync
     #custom.eMC
   ];
 
