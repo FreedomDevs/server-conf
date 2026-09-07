@@ -32,7 +32,11 @@ in {
     appendHttpConfig = ''
       lua_package_path ";;${luaPath};;";
       lua_package_cpath ";;${luaCPath};;";
+      
+      ssl_certificate_compression on;
+      ssl_early_data off;
     '';
+    sslProtocols = "TLSv1.3";
 
     upstreams = {
       "map-wolp" = {
