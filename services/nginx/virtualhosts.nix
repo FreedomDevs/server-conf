@@ -152,6 +152,7 @@ in {
   };
 
   "map-wolp.elysiac.fun" = {
+    serverAliases = ["map.wolp.fun"];
     listen = defaultListen;
     onlySSL = true;
     sslCertificate = "${../../files/certs/elysiac.fun.crt}";
