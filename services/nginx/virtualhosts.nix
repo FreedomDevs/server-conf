@@ -152,11 +152,17 @@ in {
   };
 
   "map-wolp.elysiac.fun" = {
-    serverAliases = ["map.wolp.fun"];
     listen = defaultListen;
     onlySSL = true;
     sslCertificate = "${../../files/certs/elysiac.fun.crt}";
     sslCertificateKey = "/run/agenix/elysiac.fun.key";
+    locations."/".proxyPass = "http://map-wolp";
+  };
+  "map.wolp.fun" = {
+    listen = defaultListen;
+    onlySSL = true;
+    sslCertificate = "${../../files/certs/wolp.fun.crt}";
+    sslCertificateKey = "/run/agenix/wolp.fun.key";
     locations."/".proxyPass = "http://map-wolp";
   };
 }

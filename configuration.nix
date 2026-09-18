@@ -203,6 +203,12 @@
       group = "0";
       mode = "0400";
     };
+    "wolp.fun.key" = {
+      file = ./files/certs/wolp.fun.key;
+      owner = "nginx";
+      group = "0";
+      mode = "0400";
+    };
     "elysia-game-ech_elysiac.fun.pem" = {
       file = ./files/certs/elysia-game-ech_elysiac.fun.pem;
       owner = "nginx";

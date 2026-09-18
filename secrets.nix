@@ -5,5 +5,6 @@ let
   elysiaGame = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICJ8ILJ4dmKPdvsk/b0daqYdGTrcCxgHoF57PlkhcRqf root@nixos";
 in {
   "files/certs/elysiac.fun.key".publicKeys = [laptopKey pcKey foksikKey elysiaGame];
+  "files/certs/wolp.fun.key".publicKeys = [laptopKey pcKey elysiaGame];
   "files/certs/elysia-game-ech_elysiac.fun.pem".publicKeys = [laptopKey pcKey foksikKey elysiaGame]; 
 }
