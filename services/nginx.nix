@@ -41,10 +41,10 @@ in {
     upstreams = {
       "map-wolp" = {
         extraConfig = "keepalive 4;";
-        servers."161.104.45.22:1256" = {};
+        servers."194.164.217.187:10151" = {};
       };
     };
 
-    virtualHosts = import ./nginx/virtualhosts.nix { inherit pkgs; };
+    virtualHosts = import ./nginx/virtualhosts.nix {inherit pkgs;};
   };
 }
